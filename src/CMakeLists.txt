@@ -1,0 +1,2 @@
+set(CONVERTER_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/name.cpp
+                      PARENT_SCOPE)
