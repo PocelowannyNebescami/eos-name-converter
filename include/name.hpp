@@ -13,9 +13,11 @@ public:
 
   uint64_t to_num() const;
   std::string to_string() const;
+  std::string to_sym_code() const;
 
 private:
   constexpr uint8_t char_to_num(const char character) const;
+  constexpr bool valid_sym_code() const;
 
 private:
   uint64_t origin = 0;
