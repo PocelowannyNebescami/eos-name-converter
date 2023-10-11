@@ -77,6 +77,33 @@ std::string Name::to_string() const
   return res;
 }
 
+std::string Name::to_sym() const
+{
+  if (!Name::valid_sym_code(this->origin))
+  {
+    return std::string();
+  }
+
+  const uint8_t precision = static_cast<uint8_t>(this->origin & 0xFFull);
+  const std::string code = Name::sym_code(this->origin);
+  if (code.empty())
+  {
+    return std::string();
+  }
+
+  return std::to_string(precision).append("," + code);
+}
+
+std::string Name::to_sym_code() const
+{
+  if (!Name::valid_sym_code(this->origin))
+  {
+    return std::string();
+  }
+
+  return Name::sym_code(this->origin);
+}
+
 /**
  * @todo Rid of if-chain
 */
@@ -96,4 +123,51 @@ constexpr uint8_t Name::char_to_num(const char character) const
   }
 
   throw std::invalid_argument(std::string(1, character) + " is not a valid names symbol");
+}
+
+inline bool Name::valid_sym_code(const uint64_t raw)
+{
+  uint64_t sym = raw;
+  for (int i = 0; i < 7; i++)
+  {
+    char c = static_cast<char>(sym & 0xFF);
+    if (!('A' <= c && c <= 'Z'))
+    {
+      return false;
+    }
+    sym >>= 8;
+    if (!(sym & 0xFF))
+    {
+      do
+      {
+        sym >>= 8;
+        if ((sym & 0xFF))
+        {
+          return false;
+        }
+        i++;
+      }
+      while (i < 7);
+    }
+  }
+  return true;
+}
+
+inline std::string Name::sym_code(const uint64_t raw)
+{
+  constexpr uint64_t mask = 0xFFull;
+
+  uint64_t v = raw;
+  std::string res{};
+  for (unsigned i = 0; i < 7; ++i, v >>= 8)
+  {
+    if (v == 0)
+    {
+      return res;
+    }
+
+    res += static_cast<char>(v & mask);
+  }
+
+  return res;
 }

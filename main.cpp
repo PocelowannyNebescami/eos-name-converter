@@ -35,7 +35,8 @@ int main(int arg_num, char* arg_val[])
         {
           std::cout << std::setw(20) << std::left << argument << '\t'
                     << std::setw(20) << std::left << number << '\t'
-                    << std::setw(13) << std::right << value.to_string() << '\n';
+                    << std::setw(13) << std::right << value.to_string() << '\t'
+                    << std::setw(9) << std::right << value.to_sym() << '\n';
         }
         else
         {
@@ -55,7 +56,8 @@ int main(int arg_num, char* arg_val[])
     {
       std::cout << std::setw(20) << std::left << argument << '\t'
                 << std::setw(20) << std::left << value.to_num() << '\t'
-                << std::setw(13) << std::right << value.to_string() << '\n';
+                << std::setw(13) << std::right << value.to_string() << '\t'
+                << std::setw(9) << std::right << value.to_sym() << '\n';
     }
     else
     {
