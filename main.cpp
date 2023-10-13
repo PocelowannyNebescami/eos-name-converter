@@ -1,69 +1,95 @@
 #include <iostream>
 #include <iomanip>
+#include <unistd.h>
 #include <string_view>
 #include <vector>
 #include "name.hpp"
 
+std::vector<std::string> parse_stdin();
+void print_result(const std::vector<std::string>& params);
+
 int main(int arg_num, char* arg_val[])
 {
-  if (arg_num < 2)
+  if (isatty(fileno(stdin)))
   {
+    std::vector<std::string> arguments;
+    for (int index = 1; index < arg_num; index++)
+    {
+      arguments.emplace_back(arg_val[index]);
+    }
+
+    print_result(arguments);
+
     return 0;
   }
 
-  std::string_view argument;
-  for (int index = 1; index < arg_num; index++)
+  print_result(parse_stdin());
+
+  return 0;
+}
+
+std::vector<std::string> parse_stdin()
+{
+  std::vector<std::string> res;
+  for (std::string line; std::cin >> line;)
   {
-    argument = arg_val[index];
-    if (argument.length() > 20)
+    res.push_back(line);
+  }
+
+  return res;
+}
+
+void print_result(const std::vector<std::string>& params)
+{
+  for (const std::string& param : params)
+  {
+    if (param.length() > 20)
     {
-      std::cerr << argument << ": is too long" << '\n';
+      std::cerr << param << ": is too long" << '\n';
 
       continue;
     }
 
-    if (std::all_of(argument.cbegin(), argument.cend(), [](const char sym)
+    if (std::all_of(param.cbegin(), param.cend(), [](const char sym)
     {
       return std::isdigit(sym);
     }))
     {
       try
       {
-        const uint64_t number = std::stoul(std::string(argument));
+        const uint64_t number = std::stoul(param);
         const Name value = Name(number);
         if (value.is_valid())
         {
-          std::cout << std::setw(20) << std::left << argument << '\t'
+          std::cout << std::setw(20) << std::left << param << '\t'
                     << std::setw(20) << std::left << number << '\t'
                     << std::setw(13) << std::right << value.to_string() << '\t'
                     << std::setw(9) << std::right << value.to_sym() << '\n';
         }
         else
         {
-          std::cerr << argument << ": is invalid" << '\n';
+          std::cerr << param << ": is invalid" << '\n';
         }
       }
-      catch(const std::exception& err)
+      catch (const std::exception &err)
       {
-        std::cerr << argument << ": " << err.what() << '\n';
+        std::cerr << param << ": " << err.what() << '\n';
       }
 
       continue;
     }
 
-    const Name value = Name(argument);
+    const Name value = Name(param);
     if (value.is_valid())
     {
-      std::cout << std::setw(20) << std::left << argument << '\t'
+      std::cout << std::setw(20) << std::left << param << '\t'
                 << std::setw(20) << std::left << value.to_num() << '\t'
                 << std::setw(13) << std::right << value.to_string() << '\t'
                 << std::setw(9) << std::right << value.to_sym() << '\n';
     }
     else
     {
-      std::cerr << argument << ": is invalid" << '\n';
+      std::cerr << param << ": is invalid" << '\n';
     }
   }
-
-  return 0;
 }
