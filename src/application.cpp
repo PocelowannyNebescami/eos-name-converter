@@ -76,11 +76,13 @@ int Application::run() const
 
   if (this->errors.size() > 0)
   {
+    std::cerr << "\033[91m";
     for (const auto& [error, what] : this->errors)
     {
       std::cerr << (error.length() > 20 ? error.substr(0, 20).append("..") : error)
                 << " : " << what << '\n';
     }
+    std::cerr << "\033[0m";
   }
 
   return 0;
