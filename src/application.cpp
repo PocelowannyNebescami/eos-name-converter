@@ -64,24 +64,20 @@ Application Application::parse_args(const int num, const char* const vals[])
 
 int Application::run() const
 {
-  if (this->parsed.size() > 0)
+  for (const Name& parse : parsed)
   {
-    for (const Name& parse : parsed)
-    {
-      std::cout << std::setw(13) << std::left  << parse.to_string() << ' '
-                << std::setw(20) << std::right << parse.to_num() << ' '
-                << std::setw(9)  << parse.to_sym_code() << '\n';
-    }
+    std::cout << std::setw(13) << std::left  << parse.to_string() << ' '
+              << std::setw(20) << std::right << parse.to_num() << ' '
+              << std::setw(9)  << parse.to_sym_code() << '\n';
   }
 
-  if (this->errors.size() > 0)
+  std::cerr << "\033[91m";
+  for (const auto& [error, what] : this->errors)
   {
-    for (const auto& [error, what] : this->errors)
-    {
-      std::cerr << (error.length() > 20 ? error.substr(0, 20).append("..") : error)
-                << " : " << what << '\n';
-    }
+    std::cerr << (error.length() > 20 ? error.substr(0, 20).append("..") : error)
+              << " : " << what << '\n';
   }
+  std::cerr << "\033[0m";
 
   return 0;
 }
