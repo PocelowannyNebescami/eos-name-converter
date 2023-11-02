@@ -104,25 +104,19 @@ std::string Name::to_sym_code() const
   return Name::sym_code(this->origin);
 }
 
-/**
- * @todo Rid of if-chain
-*/
 constexpr uint8_t Name::char_to_num(const char character) const
 {
-  if ( character == '.')
+  switch (character)
   {
+  case '.':
     return 0;
-  }
-  else if ( character >= '1' && character <= '5' )
-  {
+  case '1'...'5':
     return (character - '1') + 1;
-  }
-  else if ( character >= 'a' && character <= 'z' )
-  {
+  case 'a'...'z':
     return (character - 'a') + 6;
+  default:
+    throw std::invalid_argument(std::string(1, character) + " is not a valid names symbol");
   }
-
-  throw std::invalid_argument(std::string(1, character) + " is not a valid names symbol");
 }
 
 inline bool Name::valid_sym_code(const uint64_t raw)
