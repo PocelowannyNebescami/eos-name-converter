@@ -19,7 +19,7 @@ std::vector<std::string> parse_stdin()
   std::vector<std::string> res;
   for (std::string line; std::cin >> line;)
   {
-    res.push_back(line);
+    res.emplace_back(line);
   }
 
   return res;

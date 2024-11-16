@@ -19,7 +19,7 @@ Application Application::parse_args(const std::vector<std::string>& inputs)
   {
     if (input.length() > MAX_LENGTH)
     {
-      app.errors.push_back(std::make_pair(input, "Is too long"));
+      app.errors.emplace_back(input, "Is too long");
 
       continue;
     }
@@ -35,16 +35,16 @@ Application Application::parse_args(const std::vector<std::string>& inputs)
       const Name value = is_num ? Name(std::stoul(input)) : Name(input);
       if (value.is_valid())
       {
-        app.parsed.push_back(value);
+        app.parsed.emplace_back(value);
       }
       else
       {
-        app.errors.push_back(std::make_pair(input, "Is invalid"));
+        app.errors.emplace_back(input, "Is invalid");
       }
     }
     catch (const std::exception &err)
     {
-      app.errors.push_back(std::make_pair(input, err.what()));
+      app.errors.emplace_back(input, err.what());
     }
   }
 
