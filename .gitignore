@@ -1,5 +1,9 @@
-# VS Code
+# Config
 .vscode
+.clangd
 
 # Build
 build
+
+# OS
+**/.DS_Store
