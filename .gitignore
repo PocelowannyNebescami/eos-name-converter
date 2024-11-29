@@ -5,5 +5,9 @@
 # Build
 build
 
+# Tests
+Testing
+.cache
+
 # OS
 **/.DS_Store
