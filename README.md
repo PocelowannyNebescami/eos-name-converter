@@ -39,3 +39,14 @@ Generate a CMake project, invoking `cmake` with a path to the root `CMakeLists.t
 ```sh
 cmake ../ && cmake --build ./
 ```
+
+## Testing
+
+To run tests, build the project and run test executable
+```sh
+./build/converter-test
+```
+or invoke it via `ctest`
+```sh
+GTEST_COLOR=1 ctest --test-dir ./build --output-on-failure
+```
