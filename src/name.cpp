@@ -1,4 +1,6 @@
 #include "name.hpp"
+
+#include <cstdint>
 #include <stdexcept>
 
 Name::Name(const std::string_view& str)

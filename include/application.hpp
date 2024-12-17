@@ -1,7 +1,9 @@
 #pragma once
 
 #include "name.hpp"
+
 #include <vector>
+#include <string>
 
 class Application
 {
